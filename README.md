@@ -16,6 +16,8 @@ git commit -m "pass 1st stage" # any msg
 git push origin master
 ```
 
+If you're on Windows, you may have an issue with sh file permissions. Run `git update-index --chmod=+x spawn_redis_server.sh` and `git config core.filemode false` to fix it.
+
 That's all!
 
 # Stage 2 & beyond
