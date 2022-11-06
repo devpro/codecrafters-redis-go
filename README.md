@@ -29,5 +29,5 @@ Note: This section is for stages 2 and beyond.
 
 1. Ensure you have `go (1.19)` installed locally
 2. Run `./spawn_redis_server.sh` to run your Redis server, which is implemented in [`app/server.go`](./app/server.go).
-From another terminal, test it with `telnet localhost 6379`.
+From another terminal, test it with `telnet localhost 6379` then send commands (enter `close` to exit).
 3. Commit your changes and run `git push origin master` to submit your solution to CodeCrafters. Test output will be streamed to your terminal.
