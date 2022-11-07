@@ -20,19 +20,26 @@ func main() {
 		os.Exit(1)
 	}
 
-	conn, err := l.Accept()
-	if err != nil {
-		fmt.Println("Error accepting connection: ", err.Error())
-		os.Exit(1)
+	for {
+		conn, err := l.Accept()
+		if err != nil {
+			fmt.Println("Error reading from client: ", err.Error())
+			os.Exit(1)
+		}
+
+		//?
+		//defer conn.Close()
+
+		go handleConnection(conn)
 	}
+}
 
-	defer conn.Close()
-
+func handleConnection(conn net.Conn) {
 	for {
 		smallBuffer := make([]byte, 256)
 		readNb, readErr := conn.Read(smallBuffer)
 		if readErr != nil {
-			if err == io.EOF {
+			if readErr == io.EOF {
 				fmt.Println("Received EOF. Stopping loop")
 				break
 			}
@@ -47,7 +54,6 @@ func main() {
 		if bytes.Contains(smallBuffer, []byte("\r\n")) {
 			eolSize = 2
 			inputStr = strings.TrimRight(string(smallBuffer[:readNb]), "\r\n")
-			fmt.Println(len(inputStr))
 		} else {
 			// another way to get rid of a string in the string
 			inputStr = strings.TrimSpace(string(bytes.Replace(smallBuffer[:readNb], []byte("\n"), []byte(""), 1)))
