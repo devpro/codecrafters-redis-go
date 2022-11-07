@@ -27,14 +27,13 @@ func main() {
 			os.Exit(1)
 		}
 
-		//?
-		//defer conn.Close()
-
 		go handleConnection(conn)
 	}
 }
 
 func handleConnection(conn net.Conn) {
+	defer conn.Close()
+
 	for {
 		smallBuffer := make([]byte, 256)
 		readNb, readErr := conn.Read(smallBuffer)
@@ -60,7 +59,7 @@ func handleConnection(conn net.Conn) {
 		}
 		fmt.Printf("Received \"%s\" (%d bytes)\n", inputStr, readNb-eolSize)
 
-		if strings.Compare(inputStr, "close") == 0 {
+		if inputStr == "close" {
 			fmt.Println("Received close. Stopping loop")
 			break
 		}
